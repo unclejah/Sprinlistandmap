@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class EmployerController {
         return empoyerService.find(firstName,lastName);
     }
     @GetMapping("/findall")
-    public List<Employee> findall(){
+    public Collection<Employee> findall(){
         return empoyerService.findAll();
     }
 }
