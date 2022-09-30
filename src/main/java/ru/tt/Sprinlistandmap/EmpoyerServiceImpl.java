@@ -56,24 +56,26 @@ public class EmpoyerServiceImpl implements EmployerService{
     }
     @Override
     public void allDepartment(int department) {
-        for(Employee empl : employees.values()){
-            if(empl.getDepartment() == department){
-                System.out.println("ФИО = "+empl.getFullName()+", ЗП = "+empl.getSallary());
+//        for(Employee empl : employees.values()){
+//            if(empl.getDepartment() == department){
+//                System.out.println("ФИО = "+empl.getFullName()+", ЗП = "+empl.getSallary());
+//
+//            }
+//        }
+        employees.entrySet().stream()
+                .filter(e ->e.getValue().getDepartment() == department)
+                .forEach(r -> System.out.println("ФИО = "+r.getValue().getFullName()+", ЗП = "+r.getValue().getSallary()));
 
-            }
-        }
     }
     @Override
     public Employee minSallary(int department) {
-        double minSallary = Double.MAX_VALUE;
+
         String key = null;
-        for(Map.Entry<String, Employee> entry :employees.entrySet()){
-            Employee employee = entry.getValue();
-            if(employee.getDepartment() == department && employee.getSallary() < minSallary){
-                minSallary = employee.getSallary();
-                key = entry.getKey();
-            }
-        }
+
+        key = employees.entrySet().stream()
+                .filter(e ->e.getValue().getDepartment() == department)
+                .min(Comparator.comparingDouble(employee -> employee.getValue().getSallary())).get().getKey();
+
         if(key != null){
             return employees.get(key);
         }else {
@@ -82,15 +84,13 @@ public class EmpoyerServiceImpl implements EmployerService{
     }
     @Override
     public Employee maxSallary(int department) {
-        double maxSallary = Double.MIN_VALUE;
+
         String key = null;
-        for(Map.Entry<String, Employee> entry :employees.entrySet()){
-            Employee employee = entry.getValue();
-            if(employee.getDepartment() == department && employee.getSallary() > maxSallary){
-                maxSallary = employee.getSallary();
-                key = entry.getKey();
-            }
-        }
+
+        key = employees.entrySet().stream()
+                .filter(e ->e.getValue().getDepartment() == department)
+                .max(Comparator.comparingDouble(employee -> employee.getValue().getSallary())).get().getKey();
+
         if(key != null){
             return employees.get(key);
         }else {
