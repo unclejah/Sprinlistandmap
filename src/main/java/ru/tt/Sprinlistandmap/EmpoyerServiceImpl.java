@@ -6,6 +6,7 @@ import ru.tt.Sprinlistandmap.exceptions.NotFoundException;
 import ru.tt.Sprinlistandmap.exceptions.StrorageIsFullException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpoyerServiceImpl implements EmployerService{
@@ -55,46 +56,34 @@ public class EmpoyerServiceImpl implements EmployerService{
         return Collections.unmodifiableCollection(employees.values());
     }
     @Override
-    public void allDepartment(int department) {
+    public List<Map.Entry<String, Employee>> allDepartment(int department) {
 //        for(Employee empl : employees.values()){
 //            if(empl.getDepartment() == department){
 //                System.out.println("ФИО = "+empl.getFullName()+", ЗП = "+empl.getSallary());
 //
 //            }
 //        }
-        employees.entrySet().stream()
+      return employees.entrySet().stream()
                 .filter(e ->e.getValue().getDepartment() == department)
-                .forEach(r -> System.out.println("ФИО = "+r.getValue().getFullName()+", ЗП = "+r.getValue().getSallary()));
+              .collect(Collectors.toList());
+//      .forEach(r -> System.out.println("ФИО = "+r.getValue().getFullName()+", ЗП = "+r.getValue().getSallary()))
 
     }
     @Override
     public Employee minSallary(int department) {
 
-        String key = null;
 
-        key = employees.entrySet().stream()
-                .filter(e ->e.getValue().getDepartment() == department)
-                .min(Comparator.comparingDouble(employee -> employee.getValue().getSallary())).get().getKey();
-
-        if(key != null){
-            return employees.get(key);
-        }else {
-            return null;
-        }
+        return findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .min(Comparator.comparingDouble(Employee::getSallary))
+                .orElseThrow();
     }
     @Override
     public Employee maxSallary(int department) {
 
-        String key = null;
-
-        key = employees.entrySet().stream()
-                .filter(e ->e.getValue().getDepartment() == department)
-                .max(Comparator.comparingDouble(employee -> employee.getValue().getSallary())).get().getKey();
-
-        if(key != null){
-            return employees.get(key);
-        }else {
-            return null;
-        }
+        return findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .max(Comparator.comparingDouble(Employee::getSallary))
+                .orElseThrow();
     }
 }

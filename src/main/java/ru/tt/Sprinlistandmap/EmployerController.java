@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -35,8 +36,8 @@ public class EmployerController {
     }
 
     @GetMapping(value = "/all", params = "departmentid")
-    public void allDep(@RequestParam int department){
-        empoyerService.allDepartment(department);
+    public List<Map.Entry<String, Employee>> allDep(@RequestParam int department){
+        return  empoyerService.allDepartment(department);
     }
 
     @GetMapping(value = "/max-sallary", params = "departmentid")
