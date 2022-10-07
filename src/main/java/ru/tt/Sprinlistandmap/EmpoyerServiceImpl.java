@@ -1,6 +1,8 @@
 package ru.tt.Sprinlistandmap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import ru.tt.Sprinlistandmap.exceptions.BadRequest;
 import ru.tt.Sprinlistandmap.exceptions.EmployeeAlreadyAddException;
 import ru.tt.Sprinlistandmap.exceptions.NotFoundException;
 import ru.tt.Sprinlistandmap.exceptions.StrorageIsFullException;
@@ -19,6 +21,13 @@ public class EmpoyerServiceImpl implements EmployerService{
 
     @Override
     public Employee add(String firstName, String lastName, int department, double sallary) {
+
+        if(!StringUtils.isAlpha(firstName)||!StringUtils.isAlpha(lastName)){
+            throw new BadRequest("Bad very bad");
+        }
+        firstName = StringUtils.capitalize(firstName.toLowerCase());
+        lastName = StringUtils.capitalize(lastName.toLowerCase());
+
         Employee employee = new Employee(firstName,lastName, department, sallary);
         if(employees.containsKey(employee.getFullName())){
             throw new EmployeeAlreadyAddException("Сотрудник уже есть");
