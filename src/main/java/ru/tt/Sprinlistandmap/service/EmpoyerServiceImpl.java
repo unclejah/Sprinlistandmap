@@ -17,7 +17,7 @@ public class EmpoyerServiceImpl implements EmployerService {
     private static final int SIZE = 5;
     private final Map<String, Employee> employees;
 
-    public EmpoyerServiceImpl(List<Employee> employees) {
+    public EmpoyerServiceImpl() {
         this.employees = new HashMap<>();
     }
 
@@ -63,8 +63,9 @@ public class EmpoyerServiceImpl implements EmployerService {
     }
 
     @Override
-    public Collection<Employee> findAll() {
-        return Collections.unmodifiableCollection(employees.values());
+    public List<Employee> findAll() {
+        return
+                new ArrayList<>(employees.values());
     }
 
 }
