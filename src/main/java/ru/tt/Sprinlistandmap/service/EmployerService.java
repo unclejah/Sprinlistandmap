@@ -1,4 +1,6 @@
-package ru.tt.Sprinlistandmap;
+package ru.tt.Sprinlistandmap.service;
+
+import ru.tt.Sprinlistandmap.model.Employee;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +11,5 @@ public interface EmployerService {
     Employee remove(String  firstName, String lastName);
     Employee find(String  firstName, String lastName);
     Collection<Employee> findAll();
-    List<Map.Entry<String, Employee>> allDepartment(int department);
-    Employee minSallary(int department);
-    Employee maxSallary(int department);
+
 }

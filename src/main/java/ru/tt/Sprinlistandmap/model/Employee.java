@@ -1,4 +1,4 @@
-package ru.tt.Sprinlistandmap;
+package ru.tt.Sprinlistandmap.model;
 
 import java.util.Objects;
 

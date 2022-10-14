@@ -1,9 +1,11 @@
-package ru.tt.Sprinlistandmap;
+package ru.tt.Sprinlistandmap.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.tt.Sprinlistandmap.service.EmpoyerServiceImpl;
+import ru.tt.Sprinlistandmap.model.Employee;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,17 +37,5 @@ public class EmployerController {
         return empoyerService.findAll();
     }
 
-    @GetMapping(value = "/all", params = "departmentid")
-    public List<Map.Entry<String, Employee>> allDep(@RequestParam int department){
-        return  empoyerService.allDepartment(department);
-    }
 
-    @GetMapping(value = "/max-sallary", params = "departmentid")
-    public Employee maxSallary(@RequestParam int department){
-        return empoyerService.maxSallary(department);
-    }
-    @GetMapping(value = "/min-sallary", params = "departmentid")
-    public Employee minSallary(@RequestParam int department){
-        return empoyerService.minSallary(department);
-    }
 }
