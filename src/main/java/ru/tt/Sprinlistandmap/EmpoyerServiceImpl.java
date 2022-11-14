@@ -6,6 +6,7 @@ import ru.tt.Sprinlistandmap.exceptions.NotFoundException;
 import ru.tt.Sprinlistandmap.exceptions.StrorageIsFullException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpoyerServiceImpl implements EmployerService{
@@ -17,8 +18,8 @@ public class EmpoyerServiceImpl implements EmployerService{
     }
 
     @Override
-    public Employee add(String firstName, String lastName) {
-        Employee employee = new Employee(firstName,lastName);
+    public Employee add(String firstName, String lastName, int department, double sallary) {
+        Employee employee = new Employee(firstName,lastName, department, sallary);
         if(employees.containsKey(employee.getFullName())){
             throw new EmployeeAlreadyAddException("Сотрудник уже есть");
         }
@@ -31,19 +32,21 @@ public class EmpoyerServiceImpl implements EmployerService{
 
     @Override
     public Employee remove(String firstName, String lastName) {
-        Employee employee = new Employee(firstName,lastName);
-        if(employees.containsKey(employee.getFullName())){
-            employees.remove(employee.getFullName());
-            return employee;
+//        Employee employee = new Employee(firstName,lastName);
+        String fullName = firstName+" "+lastName;
+        if(employees.containsKey(fullName)){
+            employees.remove(fullName);
+            return employees.get(fullName);
         }
          throw new NotFoundException("не найден");
     }
 
     @Override
     public Employee find(String firstName, String lastName) {
-        Employee employee = new Employee(firstName,lastName);
-        if(employees.containsKey(employee.getFullName())){
-            return employees.get(employee.getFullName());
+//        Employee employee = new Employee(firstName,lastName);
+        String fullName = firstName+" "+lastName;
+        if(employees.containsKey(fullName)){
+            return employees.get(fullName);
         }
         throw new NotFoundException("не найден");
     }
@@ -51,5 +54,36 @@ public class EmpoyerServiceImpl implements EmployerService{
     @Override
     public Collection<Employee> findAll() {
         return Collections.unmodifiableCollection(employees.values());
+    }
+    @Override
+    public List<Map.Entry<String, Employee>> allDepartment(int department) {
+//        for(Employee empl : employees.values()){
+//            if(empl.getDepartment() == department){
+//                System.out.println("ФИО = "+empl.getFullName()+", ЗП = "+empl.getSallary());
+//
+//            }
+//        }
+      return employees.entrySet().stream()
+                .filter(e ->e.getValue().getDepartment() == department)
+              .collect(Collectors.toList());
+//      .forEach(r -> System.out.println("ФИО = "+r.getValue().getFullName()+", ЗП = "+r.getValue().getSallary()))
+
+    }
+    @Override
+    public Employee minSallary(int department) {
+
+
+        return findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .min(Comparator.comparingDouble(Employee::getSallary))
+                .orElseThrow();
+    }
+    @Override
+    public Employee maxSallary(int department) {
+
+        return findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .max(Comparator.comparingDouble(Employee::getSallary))
+                .orElseThrow();
     }
 }

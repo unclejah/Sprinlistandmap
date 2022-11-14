@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -17,8 +18,9 @@ public class EmployerController {
         this.empoyerService = empoyerService;
     }
     @GetMapping("/add")
-    public Employee add(@RequestParam String firstName, @RequestParam String lastName){
-        return empoyerService.add(firstName,lastName);
+    public Employee add(@RequestParam String firstName, @RequestParam String lastName,
+                        @RequestParam int department, @RequestParam double sallary){
+        return empoyerService.add(firstName,lastName, department,  sallary);
     }
     @GetMapping("/remove")
     public Employee remove(@RequestParam String firstName, @RequestParam String lastName){
@@ -31,5 +33,19 @@ public class EmployerController {
     @GetMapping("/findall")
     public Collection<Employee> findall(){
         return empoyerService.findAll();
+    }
+
+    @GetMapping(value = "/all", params = "departmentid")
+    public List<Map.Entry<String, Employee>> allDep(@RequestParam int department){
+        return  empoyerService.allDepartment(department);
+    }
+
+    @GetMapping(value = "/max-sallary", params = "departmentid")
+    public Employee maxSallary(@RequestParam int department){
+        return empoyerService.maxSallary(department);
+    }
+    @GetMapping(value = "/min-sallary", params = "departmentid")
+    public Employee minSallary(@RequestParam int department){
+        return empoyerService.minSallary(department);
     }
 }

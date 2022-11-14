@@ -5,10 +5,14 @@ import java.util.Objects;
 public class Employee {
     private String firstName;
     private String lastName;
+    private int department;
+    private double sallary;
 
-    public Employee(String firstName, String lastName) {
+    public Employee(String firstName, String lastName, int department, double sallary) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.department = department;
+        this.sallary = sallary;
     }
 
     public String getFirstName() {
@@ -18,7 +22,18 @@ public class Employee {
     public String getLastName() {
         return lastName;
     }
+    public int getDepartment() {
+        return department;
+    }
 
+    public double getSallary() {
+        return sallary;
+    }
+
+    public void setDepartment(int department) {
+        if(department <1 || department>5) throw new RuntimeException("wrong department 1-5");
+        this.department = department;
+    }
     public String getFullName(){
         return firstName+" "+lastName;
     }
