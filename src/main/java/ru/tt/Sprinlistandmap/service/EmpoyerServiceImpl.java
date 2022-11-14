@@ -1,4 +1,4 @@
-package ru.tt.Sprinlistandmap;
+package ru.tt.Sprinlistandmap.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -6,12 +6,14 @@ import ru.tt.Sprinlistandmap.exceptions.BadRequest;
 import ru.tt.Sprinlistandmap.exceptions.EmployeeAlreadyAddException;
 import ru.tt.Sprinlistandmap.exceptions.NotFoundException;
 import ru.tt.Sprinlistandmap.exceptions.StrorageIsFullException;
+import ru.tt.Sprinlistandmap.model.Employee;
+import ru.tt.Sprinlistandmap.service.EmployerService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class EmpoyerServiceImpl implements EmployerService{
+public class EmpoyerServiceImpl implements EmployerService {
     private static final int SIZE = 5;
     private final Map<String, Employee> employees;
 
@@ -64,35 +66,5 @@ public class EmpoyerServiceImpl implements EmployerService{
     public Collection<Employee> findAll() {
         return Collections.unmodifiableCollection(employees.values());
     }
-    @Override
-    public List<Map.Entry<String, Employee>> allDepartment(int department) {
-//        for(Employee empl : employees.values()){
-//            if(empl.getDepartment() == department){
-//                System.out.println("ФИО = "+empl.getFullName()+", ЗП = "+empl.getSallary());
-//
-//            }
-//        }
-      return employees.entrySet().stream()
-                .filter(e ->e.getValue().getDepartment() == department)
-              .collect(Collectors.toList());
-//      .forEach(r -> System.out.println("ФИО = "+r.getValue().getFullName()+", ЗП = "+r.getValue().getSallary()))
 
-    }
-    @Override
-    public Employee minSallary(int department) {
-
-
-        return findAll().stream()
-                .filter(e -> e.getDepartment() == department)
-                .min(Comparator.comparingDouble(Employee::getSallary))
-                .orElseThrow();
-    }
-    @Override
-    public Employee maxSallary(int department) {
-
-        return findAll().stream()
-                .filter(e -> e.getDepartment() == department)
-                .max(Comparator.comparingDouble(Employee::getSallary))
-                .orElseThrow();
-    }
 }
